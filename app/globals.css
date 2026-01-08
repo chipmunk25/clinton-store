@@ -123,3 +123,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Safe area for notched phones */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Prevent pull-to-refresh interfering with app */
+html {
+  overscroll-behavior: none;
+}
+
+/* Larger touch targets for mobile */
+@layer components {
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}

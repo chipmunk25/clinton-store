@@ -1,7 +1,7 @@
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
-type StockStatus = 'in_stock' | 'low_stock' | 'out_of_stock';
+export type StockStatus = "in_stock" | "low_stock" | "out_of_stock";
 
 interface StockBadgeProps {
   status: StockStatus;
@@ -9,25 +9,22 @@ interface StockBadgeProps {
   className?: string;
 }
 
-const statusConfig:  Record<
-  StockStatus,
-  { label: string; variant: 'default' | 'warning' | 'destructive' }
-> = {
-  in_stock: { label:  'In Stock', variant: 'default' },
-  low_stock: { label: 'Low Stock', variant: 'warning' },
-  out_of_stock: { label: 'Out of Stock', variant: 'destructive' },
-};
-
 export function StockBadge({ status, quantity, className }: StockBadgeProps) {
-  const config = statusConfig[status];
-
   return (
     <Badge
-      variant={config.variant}
-      className={cn('gap-1', className)}
+      variant="outline"
+      className={cn(
+        "font-mono",
+        status === "out_of_stock" &&
+          "border-red-500 text-red-500 bg-red-50 dark:bg-red-950",
+        status === "low_stock" &&
+          "border-amber-500 text-amber-500 bg-amber-50 dark:bg-amber-950",
+        status === "in_stock" &&
+          "border-green-500 text-green-500 bg-green-50 darkbg-green-950",
+        className
+      )}
     >
-      <span className="font-mono">{quantity}</span>
-      <span className="text-xs opacity-80">{config.label}</span>
+      {quantity} {status === "out_of_stock" ? "out" : "in stock"}
     </Badge>
   );
 }

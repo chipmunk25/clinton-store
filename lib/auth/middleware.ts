@@ -17,7 +17,14 @@ const ROUTE_PERMISSIONS: Record<string, RoutePermission> = {
 };
 
 // Public routes that don't require authentication
-const PUBLIC_ROUTES = ["/login", "/forgot-password", "/reset-password"];
+const PUBLIC_ROUTES = [
+  "/login",
+  "/forgot-password",
+  "/reset-password",
+  "/api/auth/login", // ADD THIS
+  "/api/auth/forgot-password", // ADD THIS
+  "/api/auth/reset-password", // ADD THIS
+];
 
 export async function authMiddleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
