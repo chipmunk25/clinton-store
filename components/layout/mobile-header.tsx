@@ -24,9 +24,13 @@ interface MobileHeaderProps {
     email: string;
     role: "admin" | "salesperson";
   };
+  storeName?: string;
 }
 
-export function MobileHeader({ user }: MobileHeaderProps) {
+export function MobileHeader({
+  user,
+  storeName = "Clinton Store",
+}: MobileHeaderProps) {
   const logout = useAuthStore((state) => state.logout);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -54,10 +58,12 @@ export function MobileHeader({ user }: MobileHeaderProps) {
       <div className="container max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="p-1. 5 bg-primary rounded-lg">
+          <div className="p-1.5 bg-primary rounded-lg">
             <Package className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="font-bold text-lg">Clinton Store</span>
+          <span className="font-bold text-lg truncate max-w-[140px]">
+            {storeName}
+          </span>
         </Link>
 
         {/* Right Side - Notifications & User Menu */}
