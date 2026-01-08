@@ -72,7 +72,7 @@ export const sales = pgTable(
   },
   (table) => ({
     productIdx: index("sale_product_idx").on(table.productId),
-    dateIdx: index("sale_date_idx").on(table.purchaseDate),
+    dateIdx: index("sale_date_idx").on(table.saleDate), // ✅ FIXED:  saleDate instead of purchaseDate
     quantityCheck: check("sale_quantity_positive", sql`${table.quantity} > 0`),
   })
 );
@@ -87,7 +87,7 @@ export const stockLevels = pgTable(
       .references(() => products.id, { onDelete: "cascade" }),
     totalPurchased: integer("total_purchased").notNull().default(0),
     totalSold: integer("total_sold").notNull().default(0),
-    currentStock: integer("current_stock").notNull().default(0), // Computed:  purchased - sold
+    currentStock: integer("current_stock").notNull().default(0),
     lastPurchaseDate: timestamp("last_purchase_date", { withTimezone: true }),
     lastSaleDate: timestamp("last_sale_date", { withTimezone: true }),
     updatedAt: timestamp("updated_at", { withTimezone: true })
