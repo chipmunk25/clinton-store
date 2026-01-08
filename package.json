@@ -12,10 +12,11 @@
     "db:push": "drizzle-kit push",
     "db:pull": "drizzle-kit introspect",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx db/seed.ts",
+  "db:drop": "drizzle-kit drop",
+    "db:seed": "tsx --env-file=.env.local db/seed.ts",
     "db:reset": "pnpm db:push && pnpm db:seed",
-    "db:drop": "drizzle-kit drop",
-    "db:nuke": "tsx db/reset.ts && pnpm db:push && pnpm db:seed"
+    "db:nuke": "tsx --env-file=.env. local db/reset.ts && pnpm db:push && pnpm db:seed"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
