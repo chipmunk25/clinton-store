@@ -23,8 +23,15 @@ export async function seed() {
 
   await db.insert(users).values([
     {
-      email: "admin@clintonstore.com",
-      passwordHash: await hashPassword("admin123"),
+      email: "desdhi24@gmail.com",
+      passwordHash: await hashPassword("Pass123$1"),
+      name: "Admin User",
+      role: "admin",
+      isActive: true,
+    },
+    {
+      email: "clintonadusei023@icloud.com",
+      passwordHash: await hashPassword("Pass123$1"),
       name: "Admin User",
       role: "admin",
       isActive: true,
