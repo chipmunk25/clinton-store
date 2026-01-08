@@ -1,29 +1,30 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { AppSettings } from '@/lib/db/queries/settings';
+} from "@/components/ui/select";
+import { AppSettings } from "@/lib/db/queries/settings";
 
 const CURRENCIES = [
-  { value: 'USD', label: 'USD ($)' },
-  { value: 'EUR', label: 'EUR (€)' },
-  { value: 'GBP', label: 'GBP (£)' },
-  { value: 'GHS', label: 'GHS (₵)' },
-  { value: 'NGN', label:  'NGN (₦)' },
-  { value: 'KES', label: 'KES (KSh)' },
-  { value: 'ZAR', label: 'ZAR (R)' },
+  { value: "GHS", label: "GHS (₵)", symbol: "₵" },
+  { value: "USD", label: "USD ($)", symbol: "$" },
+  { value: "EUR", label: "EUR (€)", symbol: "€" },
+  { value: "GBP", label: "GBP (£)", symbol: "£" },
+  { value: "NGN", label: "NGN (₦)", symbol: "₦" },
+  { value: "KES", label: "KES (KSh)", symbol: "KSh" },
+  { value: "ZAR", label: "ZAR (R)", symbol: "R" },
+  { value: "XOF", label: "XOF (CFA)", symbol: "CFA" },
 ];
 
 interface StoreSettingsProps {
@@ -40,9 +41,9 @@ export function StoreSettings({ settings }: StoreSettingsProps) {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/settings', {
-        method:  'PUT',
-        headers:  { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           store_name: storeName,
           store_currency: currency,
@@ -50,13 +51,13 @@ export function StoreSettings({ settings }: StoreSettingsProps) {
       });
 
       if (!res.ok) {
-        throw new Error('Failed to save settings');
+        throw new Error("Failed to save settings");
       }
 
-      toast.success('Settings saved!');
+      toast.success("Settings saved! ");
       router.refresh();
     } catch (error) {
-      toast.error('Failed to save settings');
+      toast.error("Failed to save settings");
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +100,7 @@ export function StoreSettings({ settings }: StoreSettingsProps) {
             Saving...
           </>
         ) : (
-          'Save Changes'
+          "Save Changes"
         )}
       </Button>
     </div>

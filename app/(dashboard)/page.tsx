@@ -8,7 +8,6 @@ import {
   AlertTriangle,
   ArrowRight,
   Plus,
-  DollarSign,
   PackageX,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,7 +51,7 @@ async function DashboardStats() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <DollarSign className="h-4 w-4" />
+            {/* <DollarSign className="h-4 w-4" /> */}
             <span className="text-sm">Today's Sales</span>
           </div>
           <p className="text-2xl font-bold">

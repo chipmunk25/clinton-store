@@ -273,16 +273,22 @@ export async function seed() {
 
   // 9. Create Default Settings
   console.log("Creating default settings...");
+  // In your seed. ts, update the settings section:
+
+  // 9. Create Default Settings
+  console.log("Creating default settings...");
   await db
     .insert(settings)
     .values([
       { key: "store_name", value: "Clinton Store" },
-      { key: "store_currency", value: "USD" },
+      { key: "store_currency", value: "GHS" }, // Ghana Cedis
       { key: "low_stock_alert_enabled", value: "true" },
       { key: "low_stock_check_interval", value: "24" },
       { key: "expiry_alert_days", value: "7" },
     ])
     .onConflictDoNothing();
+
+  console.log("✅ Default settings created");
 
   console.log("✅ Default settings created");
 

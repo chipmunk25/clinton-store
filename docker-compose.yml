@@ -7,9 +7,11 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_BASE_URL=https://mytestdodo.pro/api
+      - DATABASE_URL=postgresql://user:password@dbhost:5432/clinton_store_db
+      - AUTH_SECRET=Q9vM3kA7xR5JZp2FhC8NwE6SByD4LqT0Uo1eIYHgsrKmZcWVaP
+      - NEXT_PUBLIC_APP_URL=https://clintonstore@gigiandsiri.com
     restart: always
-    container_name: dodo-user-next
+    container_name: clinton-store
 networks:
   sail:
     external: true
