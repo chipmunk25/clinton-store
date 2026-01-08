@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, ShoppingCart, TrendingUp, Plus } from "lucide-react";
+import { Home, Package, ShoppingCart, Search, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BottomNavProps {
@@ -20,10 +20,10 @@ export function BottomNav({ role }: BottomNavProps) {
       active: pathname === "/",
     },
     {
-      href: "/stock",
-      icon: Package,
-      label: "Stock",
-      active: pathname.startsWith("/stock"),
+      href: "/enquiry",
+      icon: Search,
+      label: "Enquiry",
+      active: pathname === "/enquiry",
     },
     {
       href: "/sales/new",
@@ -39,10 +39,10 @@ export function BottomNav({ role }: BottomNavProps) {
       active: pathname === "/purchases/new",
     },
     {
-      href: "/reports",
-      icon: TrendingUp,
-      label: "Reports",
-      active: pathname.startsWith("/reports"),
+      href: "/stock",
+      icon: Package,
+      label: "Stock",
+      active: pathname.startsWith("/stock"),
     },
   ];
 
@@ -63,9 +63,7 @@ export function BottomNav({ role }: BottomNavProps) {
                   <div
                     className={cn(
                       "flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-transform active:scale-95",
-                      item.active
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-primary text-primary-foreground"
+                      "bg-primary text-primary-foreground"
                     )}
                   >
                     <Icon className="h-6 w-6" />
