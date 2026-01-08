@@ -1,20 +1,31 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { useDebounce } from '@/hooks/use-debounce';
-import { useProductStore } from '@/stores/product-store';
-import { Input } from '@/components/ui/input';
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Search, Package } from 'lucide-react';
-import { StockBadge } from './stock-badge';
+import { useState, useEffect, useCallback } from "react";
+
+import { useProductStore } from "@/stores/product-store";
+import { Input } from "@/components/ui/input";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Search, Package } from "lucide-react";
+import { StockBadge } from "./stock-badge";
+import { useDebounce } from "@/lib/hooks/use-debounce";
 
 interface ProductResult {
   id: string;
   productId: string;
-  name:  string;
+  name: string;
   currentStock: number;
-  stockStatus: 'in_stock' | 'low_stock' | 'out_of_stock';
+  stockStatus: "in_stock" | "low_stock" | "out_of_stock";
   sellingPrice: string;
 }
 
@@ -27,15 +38,15 @@ interface ProductSearchProps {
 export function ProductSearch({
   onSelect,
   disabled,
-  placeholder = 'Search product ID or name...',
+  placeholder = "Search product ID or name...",
 }: ProductSearchProps) {
   const [open, setOpen] = useState(false);
   const [results, setResults] = useState<ProductResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { searchQuery, setSearchQuery, recentProducts, addToRecent } =
     useProductStore();
-  
+
   const debouncedQuery = useDebounce(searchQuery, 300);
 
   const searchProducts = useCallback(async (query: string) => {
@@ -46,11 +57,13 @@ export function ProductSearch({
 
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/products/search?q=${encodeURIComponent(query)}`);
+      const res = await fetch(
+        `/api/products/search?q=${encodeURIComponent(query)}`
+      );
       const data = await res.json();
-      setResults(data. products);
+      setResults(data.products);
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error("Search failed:", error);
       setResults([]);
     } finally {
       setIsLoading(false);
@@ -62,7 +75,11 @@ export function ProductSearch({
   }, [debouncedQuery, searchProducts]);
 
   const handleSelect = (product: ProductResult) => {
-    addToRecent({ id: product.id, productId: product.productId, name: product.name });
+    addToRecent({
+      id: product.id,
+      productId: product.productId,
+      name: product.name,
+    });
     onSelect(product);
     setOpen(false);
   };
@@ -82,7 +99,10 @@ export function ProductSearch({
           />
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[calc(100vw-2rem)] max-w-lg p-0" align="start">
+      <PopoverContent
+        className="w-[calc(100vw-2rem)] max-w-lg p-0"
+        align="start"
+      >
         <Command>
           <CommandList>
             {isLoading && (
@@ -91,7 +111,7 @@ export function ProductSearch({
               </div>
             )}
             <CommandEmpty>No products found.</CommandEmpty>
-            
+
             {results.length > 0 && (
               <CommandGroup heading="Search Results">
                 {results.map((product) => (
@@ -104,7 +124,9 @@ export function ProductSearch({
                       <Package className="h-4 w-4 text-muted-foreground" />
                       <div>
                         <p className="font-medium">{product.productId}</p>
-                        <p className="text-sm text-muted-foreground">{product.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {product.name}
+                        </p>
                       </div>
                     </div>
                     <StockBadge
@@ -129,7 +151,9 @@ export function ProductSearch({
                     <Package className="h-4 w-4 text-muted-foreground" />
                     <div>
                       <p className="font-medium">{product.productId}</p>
-                      <p className="text-sm text-muted-foreground">{product.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {product.name}
+                      </p>
                     </div>
                   </CommandItem>
                 ))}

@@ -9,6 +9,7 @@ import {
   products,
   users,
   stockLevels,
+  settings,
 } from "@/db/schema";
 import { hashPassword } from "@/lib/auth/password";
 
@@ -269,6 +270,21 @@ export async function seed() {
   );
 
   console.log("✅ Stock levels initialized");
+
+  // 9. Create Default Settings
+  console.log("Creating default settings...");
+  await db
+    .insert(settings)
+    .values([
+      { key: "store_name", value: "Clinton Store" },
+      { key: "store_currency", value: "USD" },
+      { key: "low_stock_alert_enabled", value: "true" },
+      { key: "low_stock_check_interval", value: "24" },
+      { key: "expiry_alert_days", value: "7" },
+    ])
+    .onConflictDoNothing();
+
+  console.log("✅ Default settings created");
 
   /* ===================================================
    * 8. SUMMARY

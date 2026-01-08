@@ -1,46 +1,47 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { toast } from 'sonner';
-import { Save, Loader2, Eye, EyeOff } from 'lucide-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Save, Loader2, Eye, EyeOff } from "lucide-react";
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 const userSchema = z.object({
-  email: z.string().email('Please enter a valid email'),
-  name: z.string().min(1, 'Name is required').max(255),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  role: z.enum(['admin', 'salesperson']),
+  email: z.string().email("Please enter a valid email"),
+  name: z.string().min(1, "Name is required").max(255),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .optional(),
+  role: z.enum(["admin", "salesperson"]),
   isActive: z.boolean(),
 });
 
-const updateUserSchema = userSchema.omit({ password: true }).extend({
-  password: z.string().min(8).optional().or(z.literal('')),
-});
+const updateUserSchema = userSchema;
 
 type UserFormData = z.infer<typeof userSchema>;
 
 interface UserFormProps {
   initialData?: {
-    id:  string;
+    id: string;
     email: string;
     name: string;
-    role: 'admin' | 'salesperson';
+    role: "admin" | "salesperson";
     isActive: boolean;
   };
 }
@@ -61,50 +62,51 @@ export function UserForm({ initialData }: UserFormProps) {
   } = useForm<UserFormData>({
     resolver: zodResolver(isEditing ? updateUserSchema : userSchema),
     defaultValues: initialData || {
-      email: '',
-      name: '',
-      password: '',
-      role: 'salesperson',
+      email: "",
+      name: "",
+      password: "",
+      role: "salesperson",
       isActive: true,
     },
   });
 
-  const isActive = watch('isActive');
+  const isActive = watch("isActive");
 
   const onSubmit = async (data: UserFormData) => {
     setIsSubmitting(true);
 
     try {
-      const url = isEditing ? `/api/users/${initialData. id}` : '/api/users';
-      const method = isEditing ? 'PUT' : 'POST';
+      const url = isEditing ? `/api/users/${initialData.id}` : "/api/users";
+      const method = isEditing ? "PUT" : "POST";
 
       // Don't send empty password on update
       const payload = { ...data };
-      if (isEditing && ! payload.password) {
+      if (isEditing && !payload.password) {
         delete (payload as any).password;
       }
 
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       const result = await res.json();
 
-      if (! res.ok) {
-        throw new Error(result.error || 'Failed to save user');
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to save user");
       }
 
-      toast.success(isEditing ? 'User updated!' : 'User created!', {
+      toast.success(isEditing ? "User updated!" : "User created!", {
         description: data.name,
       });
 
-      router.push('/admin/users');
+      router.push("/admin/users");
       router.refresh();
     } catch (error) {
-      toast.error('Failed to save user', {
-        description: error instanceof Error ? error.message : 'Please try again',
+      toast.error("Failed to save user", {
+        description:
+          error instanceof Error ? error.message : "Please try again",
       });
     } finally {
       setIsSubmitting(false);
@@ -123,7 +125,7 @@ export function UserForm({ initialData }: UserFormProps) {
               placeholder="John Doe"
               className="h-12"
               disabled={isSubmitting}
-              {... register('name')}
+              {...register("name")}
             />
             {errors.name && (
               <p className="text-sm text-destructive">{errors.name.message}</p>
@@ -139,7 +141,7 @@ export function UserForm({ initialData }: UserFormProps) {
               placeholder="john@example.com"
               className="h-12"
               disabled={isSubmitting}
-              {... register('email')}
+              {...register("email")}
             />
             {errors.email && (
               <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -149,16 +151,18 @@ export function UserForm({ initialData }: UserFormProps) {
           {/* Password */}
           <div className="space-y-2">
             <Label htmlFor="password">
-              {isEditing ? 'New Password (leave blank to keep current)' : 'Password'}
+              {isEditing
+                ? "New Password (leave blank to keep current)"
+                : "Password"}
             </Label>
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 className="h-12 pr-10"
                 disabled={isSubmitting}
-                {...register('password')}
+                {...register("password")}
               />
               <button
                 type="button"
@@ -173,7 +177,9 @@ export function UserForm({ initialData }: UserFormProps) {
               </button>
             </div>
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password. message}</p>
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -181,8 +187,10 @@ export function UserForm({ initialData }: UserFormProps) {
           <div className="space-y-2">
             <Label>Role</Label>
             <Select
-              defaultValue={initialData?.role || 'salesperson'}
-              onValueChange={(value) => setValue('role', value as 'admin' | 'salesperson')}
+              defaultValue={initialData?.role || "salesperson"}
+              onValueChange={(value) =>
+                setValue("role", value as "admin" | "salesperson")
+              }
               disabled={isSubmitting}
             >
               <SelectTrigger className="h-12">
@@ -208,7 +216,7 @@ export function UserForm({ initialData }: UserFormProps) {
             </div>
             <Switch
               checked={isActive}
-              onCheckedChange={(checked) => setValue('isActive', checked)}
+              onCheckedChange={(checked) => setValue("isActive", checked)}
               disabled={isSubmitting}
             />
           </div>
@@ -225,12 +233,12 @@ export function UserForm({ initialData }: UserFormProps) {
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            Saving... 
+            Saving...
           </>
         ) : (
           <>
             <Save className="mr-2 h-5 w-5" />
-            {isEditing ? 'Update User' : 'Create User'}
+            {isEditing ? "Update User" : "Create User"}
           </>
         )}
       </Button>
