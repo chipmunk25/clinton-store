@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, ShoppingCart, Search, Plus } from "lucide-react";
+import { Home, Search, ShoppingCart, Plus, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BottomNavProps {
@@ -39,10 +39,10 @@ export function BottomNav({ role }: BottomNavProps) {
       active: pathname === "/purchases/new",
     },
     {
-      href: "/stock",
-      icon: Package,
-      label: "Stock",
-      active: pathname.startsWith("/stock"),
+      href: "/more",
+      icon: Menu,
+      label: "More",
+      active: pathname === "/more" || pathname.startsWith("/admin"),
     },
   ];
 
